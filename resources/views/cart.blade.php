@@ -17,8 +17,9 @@
                     <thead>
                         <tr>
                             <th class="col">Name</th>
-                            <th class="col-2">Quantity</th>
+                            <th class="col-5">Quantity</th>
                             <th class="col-3">Price</th>
+                            <th class="col">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,6 +33,15 @@
                             </td>
                             <td>
                                 {{$product->price}}
+                            </td>
+                            <td>
+                                <form action="{{route('deleteProductOnCart', $product->id_product)}}" class="d-inline form-terminator" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach
