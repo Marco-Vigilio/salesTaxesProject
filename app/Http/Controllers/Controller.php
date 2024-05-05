@@ -55,4 +55,12 @@ class Controller extends BaseController
 
         return view('cart', compact("productsOnCart"));
     }
+
+    public function deleteProductOnCart($id)
+    {
+        $product = Product::findOrFail($id);
+        $deleteProduct = Cart::where("id_product", $product->id);
+        $deleteProduct->delete();
+        return redirect()->route('cart');
+    }
 }
