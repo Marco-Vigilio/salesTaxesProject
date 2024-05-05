@@ -13,6 +13,7 @@
         <h1 class="text-center my-4">Sales Taxes Project</h1>
         <div class="row m-auto">
             <div class="col-11 m-auto">
+                <a class="text-warning d-flex justify-content-end" href="{{ route('cart')}}">See cart</a>
                 <table class="table table-striped table-hover text-center table-bordered">
                     <thead>
                         <tr>
@@ -35,7 +36,12 @@
                                 {{ $product->category->name }}
                             </td>
                             <td>
-                                <button type="button" class="btn btn-primary">Select</button>
+                                <form class="d-inline-block" action="{{ route('addToCart', $product->id) }}" method="POST">
+                                    @csrf
+                                    <button class="btn btn-primary" type="submit">
+                                        Select
+                                    </button>
+                                </form>
                             </td>
 
                         </tr>
@@ -44,7 +50,6 @@
                 </table>
             </div>
         </div>
-    </div>
     </div>
 </body>
 
