@@ -40,7 +40,6 @@ class Controller extends BaseController
 
         if ($cartItem) {
             $cartItem->quantity = $cartItem->quantity + 1;
-            $cartItem->price = $cartItem->price + $product->price;
         } else {
             $cartItem = new Cart();
             $cartItem->id_product = $product->id;
@@ -49,11 +48,14 @@ class Controller extends BaseController
             $cartItem->price = $product->price;
         }
 
+        // calcola il prezzo finale tassato
+        $cartItem->price = $this->calculateTaxedPrice($cartItem);
+
         $cartItem->save();
 
         $productsOnCart = Cart::all();
 
-        return view('cart', compact("productsOnCart"));
+        return view('cart', compact("productsOnCart", "product"));
     }
 
     public function updateCart(Request $request, $id)
@@ -71,9 +73,55 @@ class Controller extends BaseController
 
         $fixProduct->quantity = $request->quantity;
         $fixProduct->price = $product->price * $fixProduct->quantity;
-        $fixProduct->save();
 
+        $taxRate = $this->calculateTax($fixProduct);
+        $fixProduct->price = $fixProduct->price + ($fixProduct->price * $taxRate / 100); // Applica la tassa
+
+        $fixProduct->save();
         return redirect()->route('cart');
+    }
+
+    private function calculateTaxedPrice($fixProduct)
+    {
+        $basePrice = $fixProduct->price;
+        $taxRate = $this->calculateTax($fixProduct);
+
+        // calcolo del prezzo finale includendo la tassa
+        $taxedPrice = $basePrice + ($basePrice * $taxRate / 100);
+
+        return $taxedPrice;
+    }
+
+    private function calculateTax($fixProduct)
+    {
+        $categoryName = $fixProduct->product->category->name;
+        $imported = $fixProduct->product->imported;
+
+        // array di categorie dove sono esenti dalla tassazione di vendita
+        $exemptCategories = ["Food", "Medical products", "Books"];
+
+        // controlla se la categoria ha la tassazione d'importo
+        if (in_array($categoryName, $exemptCategories) && $imported) {
+            return 5;
+        }
+
+        // controlla se il prodotto ha la tassazione di vendita
+        if (!in_array($categoryName, $exemptCategories) && !$imported) {
+            return 10;
+        }
+
+        // controlla se il prodotto ha sia la tassazione di vendita che d'importo
+        if (!in_array($categoryName, $exemptCategories) && $imported) {
+            return 15;
+        }
+
+        // nessuna tassa per categorie esenti se non importati
+        if (in_array($categoryName, $exemptCategories) && !$imported) {
+            return 0;
+        }
+
+        // in teoria, non dovrebbe mai arrivare qui
+        return 0;
     }
 
     public function deleteProductOnCart($id)
