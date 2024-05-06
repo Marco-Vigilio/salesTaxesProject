@@ -40,10 +40,10 @@
                                 </form>
                             </td>
                             <td>
-                                {{$productOnCart->product->price * $productOnCart->quantity}}
+                                {{$productOnCart->product->price * $productOnCart->quantity}} &euro;
                             </td>
                             <td>
-                                {{$productOnCart->price}}
+                                {{$productOnCart->price}} &euro;
                             </td>
                             <td>
                                 <form action="{{route('deleteProductOnCart', $productOnCart->id_product)}}" class="d-inline form-terminator" method="POST">
@@ -61,7 +61,7 @@
 
                 @if (!($productsOnCart->isEmpty()))
                 <div class="d-flex justify-content-center m-auto border col-3 my-4 p-3">
-                    <h4 class="font-weight-bold">Total : {{$totalPrice}}</h4>
+                    <h4 class="font-weight-bold">Total : {{$totalPrice}} &euro;</h4>
                 </div>
                 @endif
 

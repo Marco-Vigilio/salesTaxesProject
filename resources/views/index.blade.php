@@ -30,7 +30,7 @@
                                 {{$product->name}}
                             </td>
                             <td>
-                                {{$product->price}}
+                                {{$product->price}} &euro;
                             </td>
                             <td>
                                 {{ $product->category->name }}
