@@ -16,11 +16,11 @@
                 <table class="table table-striped table-hover text-center table-bordered">
                     <thead>
                         <tr>
-                            <th class="col">Name</th>
-                            <th class="col-5">Quantity</th>
+                            <th class="col-">Name</th>
+                            <th class="col">Quantity</th>
                             <th class="col-3">Price</th>
-                            <th class="col">Price + iva</th>
-                            <th class="col">Delete</th>
+                            <th class="col-3">Price + iva</th>
+                            <th class="col-2">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,7 +30,7 @@
                                 {{$productOnCart->name_product}}
                             </td>
                             <td>
-                                <form action="{{route('updateCart', $productOnCart->id_product)}}" class="d-inline form-terminator" method="POST">
+                                <form action="{{route('updateCart', $productOnCart->id_product)}}" class="d-flex justify-content-between form-terminator" method="POST">
                                     @csrf
                                     @method('PATCH')
                                     <input type="number" class="form-control" name="quantity" id="quantity" value="{{$productOnCart->quantity}}" min="1">
@@ -69,7 +69,7 @@
                     <a type="button" class="btn btn-primary" href="{{ route('index')}}">Return to the catalogue</a>
 
                     @if (!($productsOnCart->isEmpty()))
-                    <button type="button" class="btn btn-success">Buy</button>
+                    <a type="button" class="btn btn-success" href="{{ route('showReceipt')}}">Buy</a>
                     @endif
                 </div>
 
