@@ -56,6 +56,26 @@ class Controller extends BaseController
         return view('cart', compact("productsOnCart"));
     }
 
+    public function updateCart(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        $fixProduct = Cart::where("id_product", $product->id)->first();
+
+        $request->validate([
+            "quantity" => "required|integer|min:1"
+        ]);
+
+        /*prende la quantità dal form e l'aggiorna nella quantità attuale
+        cambia il prezzo in base alla quantità inserita per il prezzo singolo del prodotto
+        */
+
+        $fixProduct->quantity = $request->quantity;
+        $fixProduct->price = $product->price * $fixProduct->quantity;
+        $fixProduct->save();
+
+        return redirect()->route('cart');
+    }
+
     public function deleteProductOnCart($id)
     {
         $product = Product::findOrFail($id);
