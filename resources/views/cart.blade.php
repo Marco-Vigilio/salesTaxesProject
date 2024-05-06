@@ -29,7 +29,15 @@
                                 {{$product->name_product}}
                             </td>
                             <td>
-                                {{$product->quantity}}
+                                <form action="{{route('updateCart', $product->id_product)}}" class="d-inline form-terminator" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="number" class="form-control" name="quantity" id="quantity" value="{{$product->quantity}}" min="1">
+                                    <input type="hidden" name="price" value="{{ $product->price }}">
+                                    <button type="submit" class="btn btn-info mt-1">
+                                        Confirm
+                                    </button>
+                                </form>
                             </td>
                             <td>
                                 {{$product->price}}
