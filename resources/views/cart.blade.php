@@ -19,31 +19,34 @@
                             <th class="col">Name</th>
                             <th class="col-5">Quantity</th>
                             <th class="col-3">Price</th>
+                            <th class="col">Price + iva</th>
                             <th class="col">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($productsOnCart as $product)
+                        @foreach ($productsOnCart as $productOnCart)
                         <tr>
                             <td>
-                                {{$product->name_product}}
+                                {{$productOnCart->name_product}}
                             </td>
                             <td>
-                                <form action="{{route('updateCart', $product->id_product)}}" class="d-inline form-terminator" method="POST">
+                                <form action="{{route('updateCart', $productOnCart->id_product)}}" class="d-inline form-terminator" method="POST">
                                     @csrf
                                     @method('PATCH')
-                                    <input type="number" class="form-control" name="quantity" id="quantity" value="{{$product->quantity}}" min="1">
-                                    <input type="hidden" name="price" value="{{ $product->price }}">
+                                    <input type="number" class="form-control" name="quantity" id="quantity" value="{{$productOnCart->quantity}}" min="1">
                                     <button type="submit" class="btn btn-info mt-1">
                                         Confirm
                                     </button>
                                 </form>
                             </td>
                             <td>
-                                {{$product->price}}
+                                {{$productOnCart->product->price * $productOnCart->quantity}}
                             </td>
                             <td>
-                                <form action="{{route('deleteProductOnCart', $product->id_product)}}" class="d-inline form-terminator" method="POST">
+                                {{$productOnCart->price}}
+                            </td>
+                            <td>
+                                <form action="{{route('deleteProductOnCart', $productOnCart->id_product)}}" class="d-inline form-terminator" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">
@@ -55,10 +58,12 @@
                         @endforeach
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-around">
+                <div class="d-flex justify-content-around mb-4">
                     <a type="button" class="btn btn-primary" href="{{ route('index')}}">Return to the catalogue</a>
 
+                    @if (!($productsOnCart->isEmpty()))
                     <button type="button" class="btn btn-success">Buy</button>
+                    @endif
                 </div>
 
             </div>
