@@ -134,4 +134,20 @@ class Controller extends BaseController
         $deleteProduct->delete();
         return redirect()->route('cart');
     }
+
+    public function showReceipt()
+    {
+        $productsOnCart = Cart::all();
+        $totalPrice = 0;
+        $totalPriceProd = 0;
+
+        foreach ($productsOnCart as $prod) {
+            $totalPrice = $totalPrice + $prod->price;
+            $totalPriceProd = $totalPriceProd + ($prod->product->price * $prod->quantity);
+        }
+
+        $iva = $totalPrice - $totalPriceProd;
+
+        return view('receipt', compact("productsOnCart", "totalPrice", "iva"));
+    }
 }
