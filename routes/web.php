@@ -18,3 +18,4 @@ Route::get('/cart', [App\Http\Controllers\Controller::class, 'showCart'])->name(
 Route::post('/cart/{id}', [App\Http\Controllers\Controller::class, 'addToCart'])->name('addToCart');
 Route::delete('/cart/{id}', [App\Http\Controllers\Controller::class, 'deleteProductOnCart'])->name('deleteProductOnCart');
 Route::patch('/cart/update/{id}', [App\Http\Controllers\Controller::class, 'updateCart'])->name('updateCart');
+Route::get('/receipt', [App\Http\Controllers\Controller::class, 'showReceipt'])->name('showReceipt');
