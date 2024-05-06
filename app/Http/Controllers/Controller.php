@@ -24,7 +24,12 @@ class Controller extends BaseController
     public function showCart()
     {
         $productsOnCart = Cart::all();
-        return view('cart', compact("productsOnCart"));
+        $totalPrice = 0;
+
+        foreach ($productsOnCart as $prod) {
+            $totalPrice = $totalPrice + $prod->price;
+        }
+        return view('cart', compact("productsOnCart", "totalPrice"));
     }
 
     public function addToCart($id)
@@ -53,9 +58,7 @@ class Controller extends BaseController
 
         $cartItem->save();
 
-        $productsOnCart = Cart::all();
-
-        return view('cart', compact("productsOnCart", "product"));
+        return redirect()->route('cart');
     }
 
     public function updateCart(Request $request, $id)

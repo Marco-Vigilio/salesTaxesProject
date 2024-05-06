@@ -58,6 +58,13 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                @if (!($productsOnCart->isEmpty()))
+                <div class="d-flex justify-content-center m-auto border col-3 my-4 p-3">
+                    <h4 class="font-weight-bold">Total : {{$totalPrice}}</h4>
+                </div>
+                @endif
+
                 <div class="d-flex justify-content-around mb-4">
                     <a type="button" class="btn btn-primary" href="{{ route('index')}}">Return to the catalogue</a>
 
