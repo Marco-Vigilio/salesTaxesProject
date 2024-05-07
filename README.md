@@ -7,6 +7,7 @@
 -   Run `composer install` to install all our composer packages
 -   Run `php artisan key:generate` to generate our custom application key
 -   Run `npm i` to install all our npm packages
+-   Run `php artisan migrate` & `php artisan db:seed` to create the tables with the data
 -   Run on two separeted terminals:
     -   run `npm run dev` to build iteratively our front-end packages and code
     -   run `php artisan serve` to build iteratively our back-end packages and code
